@@ -1,8 +1,15 @@
+{% load static %}
 <html>
     <head>
-
+        <link rel="stylesheet" type="text/css" href="{% static 'alarm/style.css' %}" />
     </head>
-    <body style="background-color: #EEBA30;">
-        Lumus!
+    <body background="{% static 'alarm/background.jpg' %}">
+        <div class="navbar">
+            <a style="float: left" href="#home">Alarme Lumus</a>
+            <a href="#contact">Nox</a>
+            <a href="#contact">Cronometro</a>
+            <a href="#news">Despertador</a>
+        </div>
+        <!-- Lumus! -->
     </body>
 </html>
