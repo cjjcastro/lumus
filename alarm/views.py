@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from alarm.models import Alarm
+from django.http import HttpResponse
 from alarm.forms import AlarmForm
+import datetime
+from django.utils.timezone import utc
 
 # Create your views here.
 def home(request):
@@ -17,5 +20,11 @@ def alarm(request):
 
 def nox(request):
     return render(request, 'alarm/nox.html', {})
+
+
+def home(request):
+	now = datetime.datetime.utcnow().replace(tzinfo=utc)
+	now = datetime.datetime.now().strftime('%H:%M:%S')
+	return render(request, 'alarm/alarm.html', {})
 
 
