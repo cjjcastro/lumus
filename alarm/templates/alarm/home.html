@@ -1,14 +1,6 @@
-{% load static %}
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="{% static 'alarm/style.css' %}" />
-    </head>
-    <body background="{% static 'alarm/background.jpg' %}">
-        <div class="navbar">
-            <a style="float: left" href="">Alarme Lumus</a>
-            <a href="nox">Nox</a>
-            <a href="#contact">Cronometro</a>
-            <a href="alarm">Despertador</a>
-        </div>
-    </body>
-</html>
+{% extends 'alarm/base.html' %} {% load static %} 
+{% block content %}
+    <div style="margin: 85 auto; text-align:center ; color:white; font-size: 300%; ">
+        {% now " H:i" %}
+    </div>
+{% endblock %}

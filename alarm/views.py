@@ -1,13 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from alarm.models import Alarm
-from django.http import HttpResponse
 from alarm.forms import AlarmForm
 import datetime
-from django.utils.timezone import utc
 
 # Create your views here.
 def home(request):
     return render(request, 'alarm/home.html', {})
+
+
 
 def alarm(request):
     alarms = Alarm.objects.all()
@@ -18,13 +18,14 @@ def alarm(request):
 
     return render(request, 'alarm/alarm.html', {'alarms': alarms, 'form': form})
 
+
+
 def nox(request):
     return render(request, 'alarm/nox.html', {})
 
-
-def home(request):
-	now = datetime.datetime.utcnow().replace(tzinfo=utc)
-	now = datetime.datetime.now().strftime('%H:%M:%S')
-	return render(request, 'alarm/alarm.html', {})
+def delete(request,part_id =None):
+    object = Alarm.objects.get(id=part_id)
+    object.delete()
+    return redirect('alarm')
 
 
