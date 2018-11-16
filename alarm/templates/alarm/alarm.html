@@ -1,0 +1,31 @@
+{% extends 'alarm/base.html' %} {% load static %} 
+{% block content %}
+<div style="margin: 0 auto;width: 80%;">
+    <div class="col-sm-4 text-center">
+        <div class="panel panel-primary">
+            <h1>Criar alarme</h1>
+            <p>Insira o horário:</p>
+            <form method="POST">
+                {% csrf_token %}
+                 {{form.hour}} <br>
+                Marcador: {{form.marker}} <br>
+                Url YouTube: {{form.url}} <br> 
+               <button type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-4 text-center"  style="float:right">
+        <div class="panel panel-primary teste">
+            <h1>Seus alarmes</h1>
+            {% for alarm in alarms %}
+            <a href="{% url 'delete_view' part_id=alarm.id %}" > Deletar </a>
+                {{ alarm.hour }}
+                {{ alarm.marker }}
+                {{ alarm.url }}<br>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+            
+{% endblock %}
+

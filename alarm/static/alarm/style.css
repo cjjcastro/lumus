@@ -1,0 +1,87 @@
+body {
+
+    /* Full height */
+    height: 100%; 
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: #740001;
+    position: fixed;
+    top: 0;
+    min-width: 100%;
+    
+}
+  
+.navbar a {
+    float: right;
+    display: block;
+    color: #EEBA30;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    color: white;
+}
+
+.container{
+    width: 88%;
+}
+
+.main-card {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
+    transition: .3s;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    border-color: #6c757d;
+    min-height: 200px;
+}
+
+.esconde {
+    visibility: hidden;
+}
+
+#divOnTop {
+    width: 300px;
+    position: absolute;
+    z-index: 10;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 25%;
+}
+
+#backLumos {
+    background-color: #000000;
+    width: 100%;
+    position: absolute;
+    z-index: 8;
+    top: 0px;
+    height: 100vh;
+}
+
+.imgAlarm {
+    height: 300px;
+}
+
