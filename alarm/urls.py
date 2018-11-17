@@ -6,7 +6,5 @@ urlpatterns = [
     path('', views.home, name='home'),
    	path('alarm', views.alarm, name='alarm'),
     re_path(r'^delete/(?P<part_id>[0-9]+)/$', views.delete, name='delete_view'),
-
-
-
+    re_path(r'^update/(?P<part_id>[0-9]+)/$', views.update, name='update_view'),
 ]
