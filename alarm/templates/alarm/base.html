@@ -10,6 +10,61 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script>
+            var audio = new Audio("{% static 'alarm/audio_file.mp3' %}");
+            function reloj() {
+                dayName = new Array ("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado");
+                monName = new Array ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro");
+                var dia = new Date();
+                var hora = dia.getHours();
+                var minuto = dia.getMinutes();
+                var segundo = dia.getSeconds();
+                var option = 2;
+                var horaD = 1;//parseInt(document.getElementById("hora").value);
+                var minutoD = 2; //parseInt(document.getElementById("minuto").value);
+                var mensagem = "sdfsd"; //document.getElementById("mensagem").value;
+
+                if (minuto < 10) {
+                    minuto = "0" + minuto
+                };
+                if (segundo < 10) {
+                    segundo = "0" + segundo
+                };
+                if (hora == horaD && minuto == minutoD && segundo == 00) {
+                    if(option == 1) {
+                        window.open("https://www.youtube.com/watch?v=MC64gKvh5R8&t=1s&autoplay=1");
+                    } else {
+                        audio.play();
+                        document.getElementById("alarm").style.display = "block";
+                        document.getElementById("alarm").style.visibility = "visible";
+                    }
+                    
+                };
+
+                var tm = document.getElementById("tm");
+                tm.textContent = (hora + ":" + minuto + ":" + segundo);
+
+                var date = document.getElementById("date");
+                date.textContent = (dayName[dia.getDay()] + ", " + dia.getDate() + " de " + monName[dia.getMonth()] + " de " +dia.getFullYear());
+                
+                // var message = document.getElementById("message");
+                // message.textContent = (mensagem);
+            };
+
+            function turnoff() {
+                audio.pause();
+                audio.currentTime = 0;
+                document.getElementById("alarm").style.visibility = "hidden";
+            };
+
+            function snooze() {
+                turnoff();
+                snoozeMin = parseInt(document.getElementById("snooze").value);
+                minutoD += snoozeMin;
+                document.getElementById("minuto").value = minutoD;
+            }
+
+            setInterval(reloj, 1000);
+
             var a = "{{alarms}}";
             function nox() {
                 document.getElementById("nox").style.display = "block";

@@ -1,6 +1,7 @@
 {% extends 'alarm/base.html' %} {% load static %} 
 {% block content %}
-    <div style="margin: 85 auto; text-align:center ; color:white; font-size: 300%; ">
-        {% now " H:i" %}
+    <div style="margin: 85 auto;text-align:center;color:white;font-size: 300%;background:  black;opacity: 0.7;">
+        <div id="tm"></div>
+        <div id="date"></div>
     </div>
 {% endblock %}
