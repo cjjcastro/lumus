@@ -28,7 +28,8 @@
                 {{ alarm.marker }}
                 {{ alarm.url }}
                 {{ alarm.status }}
-                <a href="{% url 'delete_view' part_id=alarm.id %}" > Deletar </a><br>
+                <a href="{% url 'delete_view' part_id=alarm.id %}" > Deletar </a>
+                <a href="{% url 'update_view' part_id=alarm.id %}" > Alterar </a><br>
             {% endfor %}
         </div>
     </div>
