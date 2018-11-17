@@ -18,10 +18,6 @@ def alarm(request):
     return render(request, 'alarm/alarm.html', {'alarms': alarms, 'form': form})
 
 
-def nox(request):
-    return render(request, 'alarm/nox.html', {})
-
-
 def delete(request,part_id =None):
     object = Alarm.objects.get(id=part_id)
     object.delete()
