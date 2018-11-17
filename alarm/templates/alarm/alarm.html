@@ -1,15 +1,18 @@
 {% extends 'alarm/base.html' %} {% load static %} 
 {% block content %}
+<div style="margin: 20 auto;text-align:center;color:white;font-size: 300%;background:  black;opacity: 0.7;">
+    <div id="tm"></div>
+</div>
 <div style="margin: 0 auto;width: 80%;">
     <div class="col-sm-4 text-center">
         <div class="panel panel-primary">
             <h1>Criar alarme</h1>
-            <p>Insira o horário:</p>
             <form method="POST">
                 {% csrf_token %}
-                 {{form.hour}} <br>
+                Hora: {{form.hour}} <br>
                 Marcador: {{form.marker}} <br>
-                Url YouTube: {{form.url}} <br> 
+                Url YouTube: {{form.url}} <br>
+                Ligado: {{ form.status }} <br>
                <button type="submit">Save</button>
             </form>
         </div>
@@ -17,13 +20,26 @@
     <div class="col-sm-4 text-center"  style="float:right">
         <div class="panel panel-primary teste">
             <h1>Seus alarmes</h1>
+            {% if alarms.count == 0 %}
+                Não há alarmes cadastrados
+            {% endif %}
             {% for alarm in alarms %}
-            <a href="{% url 'delete_view' part_id=alarm.id %}" > Deletar </a>
                 {{ alarm.hour }}
                 {{ alarm.marker }}
-                {{ alarm.url }}<br>
+                {{ alarm.url }}
+                {{ alarm.status }}
+                <a href="{% url 'delete_view' part_id=alarm.id %}" > Deletar </a><br>
             {% endfor %}
         </div>
+    </div>
+    <div class="esconde" id="alarm">
+        <div id="divOnTop">
+            <img class="imgAlarm" src="https://data.whicdn.com/images/308322157/original.gif">
+            <div id="message"></div>
+            <button onclick="turnoff()">Desligar</button>
+            <button onclick="snooze()">Soneca</button>
+        </div>
+        <div id="backAlarm"></div>
     </div>
 </div>
             

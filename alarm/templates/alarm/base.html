@@ -10,7 +10,18 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script>
+            var alarms;
             var audio = new Audio("{% static 'alarm/audio_file.mp3' %}");
+
+            function getAlarms() {
+                alarms = "{{alarms}}";
+                alarms = [{% for alarm in alarms %}
+                                {% if alarm.status %}
+                                    '{{ alarm.hour }}',
+                                {% endif %}
+                            {% endfor %}];
+            };
+
             function reloj() {
                 dayName = new Array ("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado");
                 monName = new Array ("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro");
@@ -22,22 +33,26 @@
                 var horaD = 1;//parseInt(document.getElementById("hora").value);
                 var minutoD = 2; //parseInt(document.getElementById("minuto").value);
                 var mensagem = "sdfsd"; //document.getElementById("mensagem").value;
-
                 if (minuto < 10) {
                     minuto = "0" + minuto
                 };
                 if (segundo < 10) {
                     segundo = "0" + segundo
                 };
-                if (hora == horaD && minuto == minutoD && segundo == 00) {
-                    if(option == 1) {
-                        window.open("https://www.youtube.com/watch?v=MC64gKvh5R8&t=1s&autoplay=1");
-                    } else {
-                        audio.play();
-                        document.getElementById("alarm").style.display = "block";
-                        document.getElementById("alarm").style.visibility = "visible";
+                
+                for(i = 0; i < alarms.length; i++){
+                    var fields = alarms[i].split(':');
+                    if (hora == parseInt(fields[0]) && minuto == parseInt(fields[1]) && segundo == 00) {
+                        if(option == 1) {
+                            window.open("https://www.youtube.com/watch?v=MC64gKvh5R8&t=1s&autoplay=1");
+                        } else {
+                            audio.play();
+                            lumos();
+                            document.getElementById("alarm").style.display = "block";
+                            document.getElementById("alarm").style.visibility = "visible";
+                        }
+                        
                     }
-                    
                 };
 
                 var tm = document.getElementById("tm");
@@ -63,9 +78,6 @@
                 document.getElementById("minuto").value = minutoD;
             }
 
-            setInterval(reloj, 1000);
-
-            var a = "{{alarms}}";
             function nox() {
                 document.getElementById("nox").style.display = "block";
                 document.getElementById("nox").style.visibility = "visible";
@@ -74,9 +86,11 @@
             function lumos() {
                 document.getElementById("nox").style.visibility = "hidden";
             };
+
+            setInterval(reloj, 1000);
         </script>
     </head>
-    <body background="{% static 'alarm/background.jpg' %}">
+    <body background="{% static 'alarm/background.jpg' %}" onload="getAlarms()">
         <div class="navbar">
             <a style="float: left" href="/">Alarme Lumus</a>
             <a href="#" onclick="nox(); return false;">Nox</a>
