@@ -11,13 +11,14 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script>
             var alarms;
+            var actualAlarm = 0;
             var audio = new Audio("{% static 'alarm/audio_file.mp3' %}");
 
             function getAlarms() {
                 alarms = "{{alarms}}";
                 alarms = [{% for alarm in alarms %}
                                 {% if alarm.status %}
-                                    '{{ alarm.hour }}',
+                                    '{{ alarm.id }}:{{ alarm.hour }}:{{ alarm.marker }}',
                                 {% endif %}
                             {% endfor %}];
             };
@@ -40,12 +41,15 @@
                 
                 for(i = 0; i < alarms.length; i++){
                     var fields = alarms[i].split(':');
-                    if (hora == parseInt(fields[0]) && minuto == parseInt(fields[1]) && segundo == 00) {
+                    if (hora == parseInt(fields[1]) && minuto == parseInt(fields[2]) && segundo == 00) {
                         if(option == 1) {
                             window.open("https://www.youtube.com/watch?v=MC64gKvh5R8&t=1s&autoplay=1");
                         } else {
+                            actualAlarm = fields[0];
                             audio.play();
                             lumos();
+                            var message = document.getElementById("message");
+                            message.textContent = (fields[3]);
                             document.getElementById("alarm").style.display = "block";
                             document.getElementById("alarm").style.visibility = "visible";
                         }
@@ -58,15 +62,13 @@
 
                 var date = document.getElementById("date");
                 date.textContent = (dayName[dia.getDay()] + ", " + dia.getDate() + " de " + monName[dia.getMonth()] + " de " +dia.getFullYear());
-                
-                // var message = document.getElementById("message");
-                // message.textContent = (mensagem);
             };
 
             function turnoff() {
                 audio.pause();
                 audio.currentTime = 0;
                 document.getElementById("alarm").style.visibility = "hidden";
+                window.location.href = "/update/"+actualAlarm;
             };
 
             function snooze() {
