@@ -20,6 +20,11 @@
             var audio = new Audio("{% static 'alarm/audio_file.mp3' %}");
 
             function start() {
+                document.getElementById("id_hour").value = '';
+                document.getElementById("id_marker").value = '';
+                document.getElementById("id_url").value = '';
+                document.getElementById("id_snooze").value = parseInt('');
+                document.getElementById("id_status").checked = false;
                 testSnooze();
                 alarms = "{{alarms}}";
                 alarms = [{% for alarm in alarms %}
