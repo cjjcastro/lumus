@@ -18,7 +18,7 @@ def alarm(request):
     return render(request, 'alarm/alarm.html', {'alarms': alarms, 'form': form})
 
 
-def delete(request,part_id =None):
+def delete(request, part_id =None):
     object = Alarm.objects.get(id=part_id)
     object.delete()
     return redirect('alarm')

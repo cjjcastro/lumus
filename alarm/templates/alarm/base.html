@@ -12,16 +12,38 @@
         <script>
             var alarms;
             var actualAlarm = 0;
+            var snoozeMin = 0;
+            var actualAlarmHour = 0;
+            var actualAlarmMinute = 0;
+            var actualAlarmMarker = "";
+            var actualAlarmUrl = "";
             var audio = new Audio("{% static 'alarm/audio_file.mp3' %}");
 
-            function getAlarms() {
+            function start() {
+                testSnooze();
                 alarms = "{{alarms}}";
                 alarms = [{% for alarm in alarms %}
                                 {% if alarm.status %}
-                                    '{{ alarm.id }}:{{ alarm.hour }}:{{ alarm.marker }}',
+                                    '{{ alarm.id }}:\
+                                    {{ alarm.hour }}:\
+                                    {{ alarm.marker }}:\
+                                    {{ alarm.snooze }}:\
+                                    {{ alarm.url }}',
                                 {% endif %}
                             {% endfor %}];
             };
+
+            function testSnooze() {
+                if(localStorage.getItem('snooze') != null) {
+                    localStorage.removeItem("snooze");
+                    document.getElementById("id_hour").value = localStorage.getItem('hour');
+                    document.getElementById("id_marker").value = localStorage.getItem('marker');
+                    document.getElementById("id_url").value = localStorage.getItem('url');
+                    document.getElementById("id_snooze").value = parseInt(localStorage.getItem('snoozeMin'));
+                    document.getElementById("id_status").checked = true;
+                    document.getElementById("button").click();
+                }
+            }
 
             function reloj() {
                 dayName = new Array ("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado");
@@ -45,6 +67,13 @@
                         if(option == 1) {
                             window.open("https://www.youtube.com/watch?v=MC64gKvh5R8&t=1s&autoplay=1");
                         } else {
+                            localStorage.removeItem("snooze");
+                            var hour = parseInt(parseInt(fields[1]) + Math.floor((parseInt(fields[2]) + parseInt(fields[4]))/60));
+                            var minute = (parseInt(fields[2]) + parseInt(fields[4]) % 60);
+                            localStorage.setItem("hour", hour+":"+minute);
+                            localStorage.setItem("marker", fields[3]);
+                            localStorage.setItem("url", fields[5]);
+                            localStorage.setItem("snoozeMin", fields[4]);
                             actualAlarm = fields[0];
                             audio.play();
                             lumos();
@@ -72,10 +101,8 @@
             };
 
             function snooze() {
+                localStorage.setItem('snooze', "ok");
                 turnoff();
-                snoozeMin = parseInt(document.getElementById("snooze").value);
-                minutoD += snoozeMin;
-                document.getElementById("minuto").value = minutoD;
             }
 
             function nox() {
@@ -90,7 +117,7 @@
             setInterval(reloj, 1000);
         </script>
     </head>
-    <body background="{% static 'alarm/background.jpg' %}" onload="getAlarms()">
+    <body background="{% static 'alarm/background.jpg' %}" onload="start()">
         <div class="navbar">
             <a style="float: left" href="/">Alarme Lumus</a>
             <a href="#" onclick="nox(); return false;">Nox</a>
