@@ -20,20 +20,18 @@
             var audio = new Audio("{% static 'alarm/audio_file.mp3' %}");
 
             function start() {
-                document.getElementById("id_hour").value = '';
-                document.getElementById("id_marker").value = '';
-                document.getElementById("id_url").value = '';
-                document.getElementById("id_snooze").value = parseInt('');
-                document.getElementById("id_status").checked = false;
+                if(location.href=='/alarms'){
+                    document.getElementById("id_hour").value = '';
+                    document.getElementById("id_marker").value = '';
+                    document.getElementById("id_url").value = '';
+                    document.getElementById("id_snooze").value = parseInt('');
+                    document.getElementById("id_status").checked = false;
+                }
                 testSnooze();
                 alarms = "{{alarms}}";
                 alarms = [{% for alarm in alarms %}
                                 {% if alarm.status %}
-                                    '{{ alarm.id }}:\
-                                    {{ alarm.hour }}:\
-                                    {{ alarm.marker }}:\
-                                    {{ alarm.snooze }}:\
-                                    {{ alarm.url }}',
+                                    '{{ alarm.id }}:{{ alarm.hour }}:{{ alarm.marker }}:{{ alarm.snooze }}:{{ alarm.useUrl }}:{{ alarm.url }}',
                                 {% endif %}
                             {% endfor %}];
             };
@@ -68,16 +66,22 @@
                 
                 for(i = 0; i < alarms.length; i++){
                     var fields = alarms[i].split(':');
+                    var t = "True".toString();
                     if (hora == parseInt(fields[1]) && minuto == parseInt(fields[2]) && segundo == 00) {
-                        if(option == 1) {
-                            window.open("https://www.youtube.com/watch?v=MC64gKvh5R8&t=1s&autoplay=1");
+                        var url = fields[6];
+                        if(fields[5].toString() == t) {
+                            if(fields.length == 8) {
+                                url = url+":"+fields[7];
+                            }
+                            window.open(url);
+                            window.location.href = "/update/"+fields[0];
                         } else {
                             localStorage.removeItem("snooze");
                             var hour = parseInt(parseInt(fields[1]) + Math.floor((parseInt(fields[2]) + parseInt(fields[4]))/60));
                             var minute = (parseInt(fields[2]) + parseInt(fields[4]) % 60);
                             localStorage.setItem("hour", hour+":"+minute);
                             localStorage.setItem("marker", fields[3]);
-                            localStorage.setItem("url", fields[5]);
+                            localStorage.setItem("url", url);
                             localStorage.setItem("snoozeMin", fields[4]);
                             actualAlarm = fields[0];
                             audio.play();
