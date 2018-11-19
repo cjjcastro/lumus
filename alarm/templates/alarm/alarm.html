@@ -11,6 +11,7 @@
                 {% csrf_token %}
                 Hora: {{form.hour}} <br>
                 Marcador: {{form.marker}} <br>
+                Despertar com vídeo: {{form.useUrl}} <br>
                 Url YouTube: {{form.url}} <br>
                 Tempo da soneca: {{form.snooze}} minutos<br>
                 Ligado: {{ form.status }} <br>
@@ -26,8 +27,13 @@
             {% endif %}
             {% for alarm in alarms %}
                 {{ alarm.hour }}
-                {{ alarm.marker }}
-                {{ alarm.url }}
+                {% if alarm.useUrl == False %}
+                    {{ alarm.marker }}
+                    {{ alarm.snooze }} minutos
+                {% endif %}
+                {% if alarm.useUrl == True %}
+                    {{ alarm.url }}
+                {% endif %}
                 {{ alarm.status }}
                 <a href="{% url 'delete_view' part_id=alarm.id %}" > Deletar </a>
                 <a href="{% url 'update_view' part_id=alarm.id %}" > Alterar </a><br>

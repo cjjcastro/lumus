@@ -8,5 +8,6 @@ class AlarmForm(forms.ModelForm):
         fields = [  'hour',
                     'marker',
                 	'status',
+                    'useUrl',
                     'url',
                     'snooze']
