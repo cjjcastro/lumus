@@ -2,7 +2,7 @@ from django.test import TestCase
 from alarm.models import Alarm
 from alarm import views
 from datetime import datetime
-from django.test import Client
+from django.test import Client, RequestFactory
 from django.urls import reverse
 
 
@@ -12,7 +12,7 @@ class test(TestCase):
 			hour=datetime.now().time(),
 			marker='acorda',
 			status=True,
-			url='dfafafa')
+			url='dfafafa') #id=1
 
 	def test_get(self):
 		ob = Alarm.objects.get(status=True)
@@ -33,6 +33,17 @@ class test(TestCase):
 		ob.marker = 'acorda agora'
 		ob.save()
 		self.assertEqual(ob.marker , 'acorda agora')
+
+	def test_delete_view(self):
+		request = RequestFactory().get('/delete/')
+		views.delete(request, 1)
+		self.assertEqual(Alarm.objects.all().count() , 0)
+
+	def test_update_view(self):
+		request = RequestFactory().get('/update/')
+		views.update(request, 1)
+		ob = Alarm.objects.get(id=1)
+		self.assertEqual(ob.status, False)
 
 class ProjectTests(TestCase):
 	def test_homepage(self):
